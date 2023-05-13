@@ -1,0 +1,5 @@
+{:paths ["."]
+ :tasks {panas.reload {:extra-deps {io.github.keychera/panas.reload {:git/sha "d80ee6d6dbfa8bab2a52e87f1da0e1682cef167c"}}
+                       :requires ([clojure.string :as str] panas.reload  calc)
+                       :task (panas.reload/-main calc/router {:url "localhost" :port 4242}
+                                                 {:reloadable? (fn [uri] (= uri "/"))})}}}
