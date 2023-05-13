@@ -9,7 +9,8 @@
         verb (:request-method req)]
     (println paths)
     (match [verb paths]
-      [:get []] {:body (render-file "calc.html" {})}
+      [:get []] {:headers {"Content-Type" "text/html; charset=utf-8"}
+                 :body (render-file "calc.html" {})}
       [:get ["calc.css"]] {:headers {"Content-Type" "text/css"}
                            :body (slurp (io/resource "calc.css"))}
       :else {:status 404 :body "not found"})))

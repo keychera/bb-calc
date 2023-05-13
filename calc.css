@@ -1,3 +1,55 @@
+/* preventing chrome(?)'s user agent style sheet */
+html,
+body,
+h1 {
+    margin: 0rem;
+}
+
+body {
+    height: 100vh;
+}
+
+.background {
+    height: 100%;
+    display: grid;
+}
+
+#calc {
+    background-color: cadetblue;
+    width: 24rem;
+    justify-self: center;
+    align-self: center;
+    display: grid;
+}
+
 .title {
-    padding: 2rem;
+    justify-self: center;
+}
+
+.num-display {
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: white;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    padding-right: 0.5rem;
+}
+
+.input-so-far.num-display {
+    font-size: small;
+    padding-top: 0.5rem;
+}
+
+.currently.num-display {
+    font-size: x-large;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.one-button {
+    justify-self: center;
+    align-self: center;
 }
