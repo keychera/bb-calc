@@ -44,7 +44,7 @@ body {
     font-size: x-large;
 }
 
-.buttons {
+#buttons {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
 }
@@ -52,4 +52,5 @@ body {
 .one-button {
     justify-self: center;
     align-self: center;
+    padding: 1rem;
 }
