@@ -14,11 +14,11 @@
           [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
           [:link {:rel "stylesheet" :href "/calc.css" :type "text/css" :title "default"}]
           [:script {:src "https://unpkg.com/htmx.org@1.9.2"}]
-          [:title "bb-calc"]]
+          [:title "bb-htmx-dentaku"]]
          [:body
           [:div.background
            [:div#calc
-            [:h1.title "bb-calc"]
+            [:h1.title "bb-htmx-dentaku"]
             [:div
              [:div.input-so-far.num-display "1234 +"]
              [:div.currently.num-display "1000"]
