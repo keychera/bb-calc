@@ -8,11 +8,22 @@
 
 (defonce calc-state (atom [0]))
 
+(defonce op-symbol
+  {\D "÷" \M "×" \- "-" \+ "+"})
+
+(defn show-num [v]
+  (cond
+    (ratio? v) (format "%.3f" (float v))
+    (float? v) (format "%.3f" v)
+    :else v))
+
 (defn current-display []
-  (let [currently (first @calc-state)]
+  (let [[v1 op v2] @calc-state]
     (str (html [:div#display
-                [:div.input-so-far.num-display "~"]
-                [:div.currently.num-display  currently]]))))
+                [:div.input-so-far.num-display (cond (= op \=) "="
+                                                     (some? op) (str (show-num v2) " " (op-symbol op))
+                                                     :else "~")]
+                [:div.currently.num-display (show-num v1)]]))))
 
 (defn base-html []
   [:html {:lang "en"}
@@ -50,9 +61,40 @@
         [:a.calc-input.one-button {:value \+} "+"]]]]]
     [:script (render-file "calc.js" {})]]])
 
+(defn math-op [v1 op v2]
+  (case op
+    \D (/ v2 v1)
+    \M (* v2 v1)
+    \- (- v2 v1)
+    \+ (+ v2 v1)))
+
 (defn num-input [req]
   (let [{:strs [num]} (payload->map req)]
-    (swap! calc-state update-in [0] (fn [v] (+ (* v 10) (Integer/parseInt num))))
+    (let [num-char (first num)]
+      (cond
+        (Character/isDigit num-char)
+        (swap! calc-state
+               (fn [[v1 op v2]]
+                 (println "NUM" v1 op)
+                 (if (= op \=)
+                   [(Integer/parseInt num)]
+                   [(+ (* v1 10) (Integer/parseInt num)) op v2])))
+
+        (#{\D \M \- \+} num-char)
+        (swap! calc-state
+               (fn [[v1 op v2]]
+                 (println "OP" v1 op)
+                 (if op
+                   [0 num-char (math-op v1 op v2)]
+                   [0 num-char v1])))
+
+        :else (case num-char
+                \= (swap! calc-state
+                          (fn [[v1 op v2]]
+                            (if op
+                              [(math-op v1 op v2) \=]
+                              [v1 \=])))
+                \C (reset! calc-state [0]))))
     (current-display)))
 
 (defn router [req]
